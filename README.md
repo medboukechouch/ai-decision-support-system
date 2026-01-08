@@ -33,7 +33,7 @@ Questions en langage naturel
 “Quels produits sont les plus rentables ?”
 “Résume les insights clés du rapport PDF.”
 
-##🔧 STACK TECHNIQUE 
+## 🔧 STACK TECHNIQUE 
 
 Python
 

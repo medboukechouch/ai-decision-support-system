@@ -1,10 +1,10 @@
 # Backlog – AI Decision Support System
 
 ## Sprint 1 – Setup & Architecture
-- [ ] Création du repository GitHub
-- [ ] Initialisation du projet (FastAPI & Streamlit)
-- [ ] Endpoint /health
-- [ ] Structure des dossiers
+- [x] Création du repository GitHub
+- [x] Initialisation du projet (FastAPI & Streamlit)
+- [x] Endpoint /health
+- [x] Structure des dossiers
 
 ## Sprint 2 – Data & Machine Learning
 - [ ] Chargement et nettoyage du dataset

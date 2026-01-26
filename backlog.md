@@ -13,7 +13,6 @@
 - [x] Endpoint /predict
 
 ## Sprint 3 – Frontend & API
-## Sprint 3 – Frontend & API
 - [x] Interface Streamlit
 - [x] Connexion Streamlit ↔ FastAPI
 - [x] Visualisation des résultats

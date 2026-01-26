@@ -7,8 +7,7 @@ scikit-learn
 requests
 langchain
 langchain-community
-langchain-google-genai  # Spécifique pour Gemini
-faiss-cpu
-pypdf
-python-multipart
-python-dotenv
+langchain-google-genai   
+faiss-cpu                
+pypdf                   
+python-dotenv            

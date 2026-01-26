@@ -1,24 +1,21 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from pydantic import BaseModel
-import pandas as pd
 import joblib
 import numpy as np
+import shutil
+import os
+# Import du moteur RAG (assurez-vous que le fichier backend/rag_engine.py existe bien)
+from backend.rag_engine import index_document, ask_question
 
-app = FastAPI(
-    title="AI Decision Support System",
-    version="2.0"
-)
+app = FastAPI(title="AI Decision Support System", version="3.0 (RAG)")
 
-# Chargement du modèle
+# --- PARTIE 1 : MACHINE LEARNING (Sprint 2 & 3) ---
+model = None
 try:
-    # Assurez-vous que le chemin est correct selon votre structure
     model = joblib.load("backend/ml/model.pkl")
-except Exception:
-    # Fallback pour éviter le crash si le pkl n'est pas trouvé immédiatement
-    model = None
-    print("⚠️ Modèle non trouvé. Lancez l'entraînement d'abord.")
+except:
+    print("⚠️ Modèle ML non trouvé. Pensez à lancer retrain_model.py")
 
-# --- CORRECTION MAJEURE : On ne demande que les paramètres de simulation ---
 class SimulationInput(BaseModel):
     marketing_spend: float
     marketing_lag1: float
@@ -32,22 +29,40 @@ def health():
 @app.post("/predict")
 def predict(data: SimulationInput):
     if not model:
-        raise HTTPException(status_code=503, detail="Modèle non chargé")
+        raise HTTPException(status_code=503, detail="Modèle ML non chargé")
+    features = np.array([[data.marketing_spend, data.marketing_lag1, data.stock_available, data.is_holiday]])
+    prediction = model.predict(features)[0]
+    return {"predicted_profit": round(float(prediction), 2)}
+
+# --- PARTIE 2 : RAG & DOCUMENTS (Sprint 4) ---
+
+# Création du dossier temporaire pour les uploads s'il n'existe pas
+os.makedirs("backend/documents", exist_ok=True)
+
+class ChatInput(BaseModel):
+    question: str
+
+@app.post("/upload-document")
+async def upload_document(file: UploadFile = File(...)):
+    """Reçoit un PDF et lance l'indexation"""
+    file_path = f"backend/documents/{file.filename}"
     
-    # On prépare les features dans l'ordre exact de l'entraînement
-    # Note: Le modèle attendait peut-être un DataFrame ou un array. 
-    # Ici on passe un array simple correspondant aux 4 features clés.
-    features = np.array([[
-        data.marketing_spend, 
-        data.marketing_lag1, 
-        data.stock_available, 
-        data.is_holiday
-    ]])
-    
+    # Sauvegarde physique du fichier
+    with open(file_path, "wb+") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    # Indexation par le moteur RAG
     try:
-        prediction = model.predict(features)[0]
-        return {"predicted_profit": round(float(prediction), 2)}
+        nb_chunks = index_document(file_path)
+        return {"message": f"Document '{file.filename}' analysé ! ({nb_chunks} morceaux indexés)"}
     except Exception as e:
-        # Si le modèle a été entraîné avec plus de colonnes (ex: region, date...), 
-        # il faudra ré-entraîner le modèle avec SEULEMENT ces 4 colonnes.
-        raise HTTPException(status_code=500, detail=f"Erreur modèle: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Erreur d'analyse : {str(e)}")
+
+@app.post("/ask-document")
+def chat_with_document(data: ChatInput):
+    """Pose une question à l'IA sur le document"""
+    try:
+        response = ask_question(data.question)
+        return {"response": response}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

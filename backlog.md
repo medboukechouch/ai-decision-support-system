@@ -18,10 +18,10 @@
 - [x] Visualisation des résultats
 
 ## Sprint 4 – LLM & RAG (Document AI)
-- [x] Upload de documents (PDF)
-- [x] Indexation avec FAISS (Local Embeddings)
-- [x] Implémentation du RAG (Hybrid: Local + Gemini)
-- [x] Endpoint /ask-document et Chat dans Streamlit
+- [x] Upload de documents
+- [x] Indexation avec FAISS
+- [x] Implémentation du RAG
+- [x] Endpoint /ask-document
 
 ## Sprint 5 – Finalisation
 - [ ] Optimisation du code

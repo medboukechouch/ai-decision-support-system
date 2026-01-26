@@ -78,8 +78,6 @@ with tab3:
         with st.chat_message("user"):
             st.write(user_input)
         
-        # 2. Appel API pour la réponse
-        # ... (dans frontend/app.py, vers la ligne 87) ...
         
         # 2. Appel API pour la réponse
         with st.chat_message("assistant"):

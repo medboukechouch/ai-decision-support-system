@@ -5,9 +5,11 @@ pandas
 numpy
 scikit-learn
 requests
+plotly
 langchain
 langchain-community
-langchain-google-genai   
-faiss-cpu                
-pypdf                   
-python-dotenv            
+langchain-google-genai
+faiss-cpu
+pypdf
+python-dotenv
+sentence-transformers

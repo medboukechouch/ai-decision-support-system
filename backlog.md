@@ -24,6 +24,7 @@
 - [x] Endpoint /ask-document
 
 ## Sprint 5 – Finalisation
-- [ ] Optimisation du code
-- [ ] README final
-- [ ] Tests et démonstration
+- [x] Dashboard Stratégique & Simulateur
+- [x] Optimisation du code
+- [x] README final
+- [x] Tests et démonstration

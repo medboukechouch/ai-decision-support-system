@@ -17,11 +17,11 @@
 - [x] Connexion Streamlit ↔ FastAPI
 - [x] Visualisation des résultats
 
-## Sprint 4 – LLM & RAG
-- [ ] Upload de documents
-- [ ] Indexation avec FAISS
-- [ ] Implémentation du RAG
-- [ ] Endpoint /ask-document
+## Sprint 4 – LLM & RAG (Document AI)
+- [x] Upload de documents (PDF)
+- [x] Indexation avec FAISS (Local Embeddings)
+- [x] Implémentation du RAG (Hybrid: Local + Gemini)
+- [x] Endpoint /ask-document et Chat dans Streamlit
 
 ## Sprint 5 – Finalisation
 - [ ] Optimisation du code
